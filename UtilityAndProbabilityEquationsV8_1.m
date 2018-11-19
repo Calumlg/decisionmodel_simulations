@@ -1,4 +1,4 @@
-%% CALUM's Matlab Mini Task #1
+% CALUM's Matlab Mini Task #1
 % The following script takes values of Value gain and value loss to
 % determine the utility of a gamble gain and the utility of a certain
 % reward. These values are then used to determine the probability of taking
@@ -10,8 +10,9 @@ n_gambles = 6;
 VGambleGain = [40,40,30,20,30,10];
 VGambleLoss = repelem(0, n_gambles);
 VCertainGain = [20,20,20,-10,-20,-15];
-Util_Cert1 = NaN(3,6)
-Util_Cert2 = NaN(3,6)
+% Util_Cert1 = NaN(3,6)
+% Util_Cert2 = NaN(3,6)
+Util_Cert = NaN(3,6);
 aGain = [0.8:0.1:1.4];
 UtilityDifference = NaN(n_gambles, length(aGain));
 mu = -1;
@@ -19,10 +20,9 @@ LossAversion = [0.1:0.1:0.8];
 %% Calculating UGamble and UCertain values
 % This is done with a for loop where each gamble value is multiplied by 0.5
 % and multipled element wise to the power aGain (0.8:.01:1.3)
-
+for L_AV_Count      = 1 : length(LossAversion)
 for GenericCount    = 1 : length(VGambleGain)
 for A_GAIN_Count    = 1 : length(aGain)
-for L_AV_Count      = 1 : length(LossAversion)
     
         V_CERT_GAIN                             = VCertainGain(GenericCount);
         V_GAM_GAIN                              = VGambleGain(GenericCount);
@@ -30,20 +30,28 @@ for L_AV_Count      = 1 : length(LossAversion)
         L_AV                                    = LossAversion(L_AV_Count)
         
         EV                                      = V_GAM_GAIN*0.5
-        Util_Gam(GenericCount, A_GAIN_Count)    = EV^A_GAIN
+        Util_Gam(GenericCount, A_GAIN_Count)    = EV^A_GAIN;
         
-if     V_CERT_GAIN >= 0
-            Util_Cert1(1,1,:)                    = V_CERT_GAIN^A_GAIN
-else   V_CERT_GAIN < 0
-            Util_Cert2(1,1,:)                    = -L_AV_Count*(V_CERT_GAIN^A_GAIN)
-        Util_Cert(GenericCount, A_GAIN_Count)    = vertcat(Util_Cert1,Util_Cert2)
-end
+% if     V_CERT_GAIN >= 0
+%             Util_Cert1(1,1,:)                    = V_CERT_GAIN^A_GAIN
+% else   V_CERT_GAIN < 0
+%             Util_Cert2(1,1,:)                    = -L_AV_Count*(V_CERT_GAIN^A_GAIN)
+%         Util_Cert(GenericCount, A_GAIN_Count)    = vertcat(Util_Cert1,Util_Cert2)
+% end
 
-      
-        
-       
-end        
-end     
+if V_CERT_GAIN>=0 %if the value of the certain option is positive
+    Util_Cert(GenericCount,A_GAIN_Count)       = V_CERT_GAIN^A_GAIN; %...perform this operation
+elseif V_CERT_GAIN<0 %if the value of the certain option is negative
+    Util_Cert(GenericCount,A_GAIN_Count)       = -L_AV*((-V_CERT_GAIN)^A_GAIN) %...perform this other operation
+end
+%...no need for concatenating of having different Certain arrays!
+
+end  
+end   
+
+%I moved L_Av_Count so be the outer loop, so it can pass the values into a cell
+UTILGAM{L_AV_Count} = Util_Gam; clear Util_Gam
+UTILCERT{L_AV_Count} = Util_Cert; clear Util_Cert
 end
 
 clear A_GAIN_Count
@@ -103,5 +111,3 @@ end
 % few variables which should make it reasonably flexible.
 %RB - flexibility is good, you made the structure based on the function, so
 %good job!
-
-    
