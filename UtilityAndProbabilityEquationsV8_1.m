@@ -45,6 +45,7 @@ elseif V_CERT_GAIN<0 %if the value of the certain option is negative
     Util_Cert(GenericCount,A_GAIN_Count)       = -L_AV*((-V_CERT_GAIN)^A_GAIN) %...perform this other operation
 end
 %...no need for concatenating of having different Certain arrays!
+%CG... I must have been doing something else wrong too then, because it wouldn't work even before I tried vertcat
 
 end  
 end   
@@ -61,7 +62,7 @@ clear GenericCount
 % Here we are coding to generate the probability a given gamble will be
 % chosen, using the utility values above.
 
-UtilityDifference = (Util_Gam-Util_Cert);
+UtilityDifference = (UTILGAM-UTILCERT);
 
 pGamble = 1./(1+exp(mu.*(UtilityDifference)));
 
@@ -70,7 +71,7 @@ pGamble = 1./(1+exp(mu.*(UtilityDifference)));
 figure;
 for A_GAIN_Count    = 1 : length(aGain);
         % subplot(2,4,A_GAIN_Count)
-            plot(pGamble(:, A_GAIN_Count),Util_Gam(:,A_GAIN_Count)); hold on
+            plot(pGamble(:, A_GAIN_Count),UTILGAM(:,A_GAIN_Count)); hold on
            % 'Color''[0.2,0.6,0.4]';
             xlabel('Utility Gamble')
             ylabel('Values of p')
