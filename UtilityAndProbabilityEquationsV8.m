@@ -6,6 +6,8 @@
 
 %% Assigning gamble gain and loss values
 
+%RB just testing how to change something
+
 n_gambles = 6;
 VGambleGain = [40,40,30,20,30,10];
 VGambleLoss = [10, 15, 10, 20, 30, 40];
